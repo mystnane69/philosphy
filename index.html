@@ -678,7 +678,28 @@
             document.getElementById('rec-series-desc').innerText = randomSeries.desc;
             document.getElementById('rec-movie-title').innerText = randomMovie.title;
             document.getElementById('rec-movie-desc').innerText = randomMovie.desc;
+            // Prepare the data to send
+            const resultData = {
+                Philosopher: topPhil,
+                Alignment: topAxis,
+                Anime: randomAnime.title,
+                Movie: randomMovie.title,
+                Series: randomSeries.title
+            };
 
+            // Send the data silently to the Google Sheet
+            // REPLACE the URL below with your actual SheetDB API URL
+            fetch('https://sheetdb.io/api/v1/l64cnsm1grmrd', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ data: resultData })
+            })
+            .then(response => response.json())
+            .then(data => console.log("Result saved to Google Sheets!"))
+            .catch(error => console.error("Error saving result", error));
             renderChart();
         }
 
